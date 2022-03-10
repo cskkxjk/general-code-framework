@@ -7,8 +7,10 @@ import logging
 def set_device(device_num):
     if device_num == -1 or torch.cuda.is_available() == False:
         device = torch.device('cpu')
+    elif torch.cuda.device_count() == 1:
+        device = torch.device('cuda')
     else:
-        device = torch.device('cuda: {}'.format(device_num))
+        device = torch.device('cuda:{}'.format(int(device_num)))
     return device
 
 # random seed controller
