@@ -75,7 +75,10 @@ class CheckpointIO(object):
         if os.path.exists(filename):
             print(filename)
             print('=> Loading checkpoint from local file...')
-            state_dict = torch.load(filename)
+            try:
+                state_dict = torch.load(filename)
+            except RuntimeError:
+                state_dict = torch.load(filename, map_location=torch.device('cpu'))
             scalars = self.parse_state_dict(state_dict)
             return scalars
         else:
